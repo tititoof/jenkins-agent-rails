@@ -21,7 +21,7 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #  THE SOFTWARE.
 
-ARG version=4.6-2-jdk11
+ARG version=4.7-1-jdk11
 FROM jenkins/agent:$version
 
 ARG version
@@ -50,4 +50,5 @@ RUN echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"' 
 RUN $HOME/.rvm/scripts/rvm
 RUN rvm install ruby-3
 RUN rvm use ruby-3
+
 ENTRYPOINT ["jenkins-agent"]
