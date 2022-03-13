@@ -21,7 +21,7 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #  THE SOFTWARE.
 
-ARG version=4.13-1-jdk17
+ARG version=4.13-1-jdk11
 FROM jenkins/agent:$version
 
 ARG version
