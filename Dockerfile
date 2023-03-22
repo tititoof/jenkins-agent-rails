@@ -22,6 +22,7 @@
 #  THE SOFTWARE.
 
 ARG version=3107.v665000b_51092-4-jdk11
+
 FROM jenkins/agent:$version
 
 ARG version
