@@ -1,4 +1,4 @@
-  
+
 # The MIT License
 #
 #  Copyright (c) 2015-2017, CloudBees, Inc.
@@ -21,7 +21,7 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #  THE SOFTWARE.
 
-ARG version=3107.v665000b_51092-4-jdk11
+ARG version=latest-jdk25
 
 FROM jenkins/agent:$version
 
@@ -32,9 +32,13 @@ USER root
 
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends curl git openssh-server openjdk-11-jre-headless sudo nodejs gnupg gnupg2 libyaml-dev imagemagick build-essential zlib1g-dev libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev libgmp-dev libpq-dev gawk autoconf automake bison libgdbm-dev libncurses5-dev libtool pkg-config  libvips42
+    apt-get install -y --no-install-recommends curl git openssh-server openjdk-21-jre-headless \
+    sudo nodejs gnupg gnupg2 libyaml-dev lsb-release imagemagick build-essential zlib1g-dev libssl-dev \
+    libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev \
+    libffi-dev libgmp-dev libpq-dev gawk autoconf automake bison libgdbm-dev libncurses5-dev libtool \
+    pkg-config libvips42
 
-RUN mkdir /var/run/sshd
+# RUN mkdir /var/run/sshd
 RUN echo "jenkins:jenkins" | chpasswd
 RUN echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
