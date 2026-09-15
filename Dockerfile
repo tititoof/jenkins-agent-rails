@@ -49,9 +49,25 @@ RUN chmod +x /usr/local/bin/jenkins-agent &&\
     ln -s /usr/local/bin/jenkins-agent /usr/local/bin/jenkins-slave
 USER ${user}
 
+ARG ruby_version=3.3.12
+ENV RUBY_VERSION=${ruby_version}
+
 RUN \curl -sSL https://rvm.io/mpapis.asc | gpg2 --import
 RUN \curl -sSL https://rvm.io/pkuczynski.asc | gpg2 --import
 RUN \curl -sSL https://get.rvm.io | bash -s stable
 RUN echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"'  >> /home/jenkins/.bashrc
+
+# Install an actual Ruby (the base RVM install above only provides the
+# version manager, not a Ruby) and make it the default, generating
+# standalone wrapper scripts in ~/.rvm/wrappers/default so `ruby`/`gem`/
+# `bundle` work from Jenkins' non-interactive `sh -c` build steps without
+# sourcing rvm first.
+RUN bash -c "source \$HOME/.rvm/scripts/rvm && \
+    rvm install ${RUBY_VERSION} && \
+    rvm use ${RUBY_VERSION} --default && \
+    rvm cleanup all && \
+    gem install bundler --no-document"
+
+ENV PATH="/home/jenkins/.rvm/wrappers/default:/home/jenkins/.rvm/bin:${PATH}"
 
 ENTRYPOINT ["jenkins-agent"]
