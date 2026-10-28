@@ -91,6 +91,10 @@ USER ${user}
 
 ARG ruby_version=3.3.12
 ENV RUBY_VERSION=${ruby_version}
+# Versions demandées par les projets (.ruby-version) : préinstallées, sinon un
+# agent éphémère (pod Kubernetes) recompilerait Ruby à chaque build.
+# candlekeep-backend : ruby-3.2.2
+ARG ruby_extra_versions="3.2.2"
 
 RUN \curl -sSL https://rvm.io/mpapis.asc | gpg2 --import
 RUN \curl -sSL https://rvm.io/pkuczynski.asc | gpg2 --import
@@ -106,6 +110,9 @@ RUN echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"' 
 # Les dépendances de compilation sont déjà installées par l'apt-get ci-dessus.
 RUN bash -c "source \$HOME/.rvm/scripts/rvm && \
     rvm autolibs disable && \
+    for v in ${ruby_extra_versions}; do \
+      rvm install \$v && rvm use \$v && gem install bundler --no-document || exit 1; \
+    done && \
     rvm install ${RUBY_VERSION} && \
     rvm use ${RUBY_VERSION} --default && \
     rvm cleanup all && \
