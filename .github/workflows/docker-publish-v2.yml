@@ -6,6 +6,8 @@ name: Docker
 # documentation.
 
 on:
+  # Relance manuelle depuis l'onglet Actions
+  workflow_dispatch:
   schedule:
     - cron: '22 10 * * *'
   push:
