@@ -93,8 +93,8 @@ ARG ruby_version=3.3.12
 ENV RUBY_VERSION=${ruby_version}
 # Versions demandées par les projets (.ruby-version) : préinstallées, sinon un
 # agent éphémère (pod Kubernetes) recompilerait Ruby à chaque build.
-# candlekeep-backend : ruby-3.4.12
-ARG ruby_extra_versions="3.4.12"
+# candlekeep-backend : ruby-3.4.12 (develop), ruby-4.0.9 (passage à Ruby 4)
+ARG ruby_extra_versions="3.4.12 4.0.9"
 
 RUN \curl -sSL https://rvm.io/mpapis.asc | gpg2 --import
 RUN \curl -sSL https://rvm.io/pkuczynski.asc | gpg2 --import
