@@ -98,7 +98,9 @@ ARG ruby_extra_versions="3.4.12 4.0.9"
 
 RUN \curl -sSL https://rvm.io/mpapis.asc | gpg2 --import
 RUN \curl -sSL https://rvm.io/pkuczynski.asc | gpg2 --import
-RUN \curl -sSL https://get.rvm.io | bash -s stable
+# RVM master : la dernière version stable (1.29.12) ne reconnaît pas Ruby 4
+# (« Unknown ruby interpreter version »)
+RUN \curl -sSL https://get.rvm.io | bash -s master
 RUN echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"'  >> /home/jenkins/.bashrc
 
 # Install an actual Ruby (the base RVM install above only provides the
